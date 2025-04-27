@@ -12,7 +12,8 @@ stages:
         dataset:
           subset:
             subset_function:
-              _target_: delta_learning.utils.full
+              _target_: delta_learning.utils.first_n_samples
+              n_samples: 10000
           name: rmd17
           molecule_name: benzene
           high_fidelity: rmd17
@@ -41,16 +42,16 @@ stages:
     outs:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 6d1edfb51e4a2a19209534ffc4306906.dir
+      size: 6081004
       nfiles: 2
   evaluate_data:
     cmd: python src/delta_learning/2_evaluate_data.py
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 6d1edfb51e4a2a19209534ffc4306906.dir
+      size: 6081004
       nfiles: 2
     - path: src/delta_learning/2_evaluate_data.py
       hash: md5
@@ -61,7 +62,8 @@ stages:
         dataset:
           subset:
             subset_function:
-              _target_: delta_learning.utils.full
+              _target_: delta_learning.utils.first_n_samples
+              n_samples: 10000
           name: rmd17
           molecule_name: benzene
           high_fidelity: rmd17
@@ -90,7 +92,7 @@ stages:
     outs:
     - path: dvclive/evaluate_data
       hash: md5
-      md5: 657ffbb5c2207732828cf82ff58ed055.dir
+      md5: fdea32f612c2c887f491bdd2371f9147.dir
       size: 92999
       nfiles: 3
   prepare_data:
@@ -98,8 +100,8 @@ stages:
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 6d1edfb51e4a2a19209534ffc4306906.dir
+      size: 6081004
       nfiles: 2
     - path: src/delta_learning/3_prepare_data.py
       hash: md5
@@ -110,7 +112,8 @@ stages:
         dataset:
           subset:
             subset_function:
-              _target_: delta_learning.utils.full
+              _target_: delta_learning.utils.first_n_samples
+              n_samples: 10000
           name: rmd17
           molecule_name: benzene
           high_fidelity: rmd17
@@ -149,16 +152,16 @@ stages:
     outs:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 32c17be243cb87af2ec28bc3f17e19cb.dir
+      size: 12258224
       nfiles: 9
   train:
     cmd: python src/delta_learning/4_train.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 32c17be243cb87af2ec28bc3f17e19cb.dir
+      size: 12258224
       nfiles: 9
     - path: src/delta_learning/4_train.py
       hash: md5
@@ -166,9 +169,9 @@ stages:
       size: 1112
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         model:
@@ -199,7 +202,7 @@ stages:
     outs:
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
+      md5: 71a7564237d47b77ee624e36dada7b4a.dir
       size: 650577
       nfiles: 3
   predict:
@@ -207,12 +210,12 @@ stages:
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 32c17be243cb87af2ec28bc3f17e19cb.dir
+      size: 12258224
       nfiles: 9
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
+      md5: 71a7564237d47b77ee624e36dada7b4a.dir
       size: 650577
       nfiles: 3
     - path: src/delta_learning/5_predict.py
@@ -221,15 +224,16 @@ stages:
       size: 4022
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         dataset:
           subset:
             subset_function:
-              _target_: delta_learning.utils.full
+              _target_: delta_learning.utils.first_n_samples
+              n_samples: 10000
           name: rmd17
           molecule_name: benzene
           high_fidelity: rmd17
@@ -283,16 +287,16 @@ stages:
     outs:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
+      md5: 5456090e28e9935e302e7b9289747b9c.dir
+      size: 223270
       nfiles: 6
   evaluate:
     cmd: python src/delta_learning/6_evaluate.py
     deps:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
+      md5: 5456090e28e9935e302e7b9289747b9c.dir
+      size: 223270
       nfiles: 6
     - path: src/delta_learning/6_evaluate.py
       hash: md5
@@ -303,7 +307,8 @@ stages:
         dataset:
           subset:
             subset_function:
-              _target_: delta_learning.utils.full
+              _target_: delta_learning.utils.first_n_samples
+              n_samples: 10000
           name: rmd17
           molecule_name: benzene
           high_fidelity: rmd17
@@ -332,6 +337,6 @@ stages:
     outs:
     - path: dvclive/evaluate
       hash: md5
-      md5: 28b428dfd8b539e9f6d2b9d8778491ba.dir
-      size: 44064
+      md5: 7c5e49e00cae1cd5d532ff9f45b82d08.dir
+      size: 43645
       nfiles: 2

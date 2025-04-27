@@ -22,7 +22,8 @@ s6_evaluate:
 dataset:
   subset:
     subset_function:
-      _target_: delta_learning.utils.full
+      _target_: delta_learning.utils.first_n_samples
+      n_samples: 10000
   name: rmd17
   molecule_name: benzene
   high_fidelity: rmd17
