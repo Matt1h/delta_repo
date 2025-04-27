@@ -1,0 +1,80 @@
+s3_prepare_data:
+  seed: 42
+  n_train: 1000
+  n_test: 2000
+  remove_offset: true
+s5_predict:
+  name: calc_correlation
+s6_evaluate:
+  name: correlation_plot
+  plot_function:
+    _target_: GPR_MLIP.evaluation.extended_reliablility_diagram
+    _partial_: true
+  plot_function_kwargs:
+    num_bins: 20
+    bin_size: null
+    min_samples: 50
+    num_top_values: null
+    max_uncertainty: null
+    absolute: false
+    max_value: null
+    max_value_theory: null
+dataset:
+  subset:
+    subset_function:
+      _target_: delta_learning.utils.full
+  name: rmd17
+  molecule_name: benzene
+  high_fidelity: rmd17
+  low_fidelity: XTB
+  path: /rmd17/npz_data/rmd17_benzene.npz
+  load_coordinates_function:
+    _target_: delta_learning.utils.load_npz
+    key: coords
+    _partial_: true
+  load_charges_function:
+    _target_: delta_learning.utils.load_npz
+    key: nuclear_charges
+    _partial_: true
+  load_energies_function:
+    _target_: delta_learning.utils.load_scalar_properties_npz
+    unit: kcal/mol
+    fidelity_keys:
+      rmd17: energies
+    _partial_: true
+  load_forces_function:
+    _target_: delta_learning.utils.load_scalar_properties_npz
+    unit: kcal/mol
+    fidelity_keys:
+      rmd17: forces
+    _partial_: true
+model:
+  kernel:
+    kernel:
+      _target_: gpytorch.kernels.RBFKernel
+      _partial_: true
+  name: single_fidelity_gpr
+  use_forces: false
+  init_function:
+    _target_: delta_learning.model.gpr.SingleFidelityGPR
+    fidelity: rmd17
+    model_kwargs:
+      likelihood:
+        _target_: gpytorch.likelihoods.GaussianLikelihood
+        noise_constraint:
+          _target_: gpytorch.constraints.GreaterThan
+          lower_bound: 1.0e-12
+      lr: 0.1
+      n_steps: 200
+    kernel:
+      _target_: gpytorch.kernels.RBFKernel
+      _partial_: true
+    old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
+    uncertainty_kwargs:
+      batch_size: 1000
+      use_likelihood: false
+representation:
+  name: coulomb
+  function:
+    _target_: molecule_data.representations.coulomb
+    _partial_: true

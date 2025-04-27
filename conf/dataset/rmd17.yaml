@@ -1,0 +1,34 @@
+defaults:
+  - subset: full
+
+name: rmd17
+molecule_name: benzene
+
+high_fidelity: rmd17
+low_fidelity: XTB
+
+path: /rmd17/npz_data/rmd17_${dataset.molecule_name}.npz  # path inside ${datasets_dir}
+
+load_coordinates_function:
+  _target_: delta_learning.utils.load_npz
+  key: 'coords'
+  _partial_: true
+
+load_charges_function:
+  _target_: delta_learning.utils.load_npz
+  key: 'nuclear_charges'
+  _partial_: true
+
+load_energies_function:
+  _target_: delta_learning.utils.load_scalar_properties_npz
+  unit: kcal/mol
+  fidelity_keys:
+    rmd17: 'energies'
+  _partial_: true
+
+load_forces_function:
+  _target_: delta_learning.utils.load_scalar_properties_npz
+  unit: kcal/mol
+  fidelity_keys:
+    rmd17: 'forces'
+  _partial_: true

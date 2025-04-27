@@ -1,0 +1,11 @@
+- molecule=benzene
+- experiment=cross_validation
+- experiment.n_cv_samples=1000
+- experiment/model_init/hyper_inits=combinations
+- experiment/model_init/hyper_inits/general_hypers=combinations3
+- dataset.remove_offset=True
+- dataset.trajectory_type=rmd17
+- dataset.trajectory_name=full
+- dataset.function.property_=gs_energies
+- dataset.calculation_methods=[rmd17_energy]
+- result_name=combinations3_1000

@@ -1,0 +1,11 @@
+- molecule=sma
+- experiment=cross_validation
+- experiment.n_cv_samples=1000
+- experiment/model_init/hyper_inits=combinations
+- experiment/model_init/hyper_inits/general_hypers=combinations3
+- dataset.trajectory_type=ws22
+- dataset.trajectory_name=full
+- dataset.function.property_=gs_energy
+- dataset.remove_offset=true
+- dataset.energy_calculation_method=ws22_energies
+- result_name=combinations3_1000

@@ -1,0 +1,19 @@
+name: separate_fidelities_sgdml
+
+use_forces: true
+
+init_function:
+  _target_: delta_learning.model.sgdml.SeparateFidelitiesSGDML
+  fidelity: ${dataset.high_fidelity}
+  low_fidelity: ${dataset.low_fidelity}
+  data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+  train_kwargs:
+    max_memory: null
+    max_processes: 1
+    use_torch: false
+  task_kwargs:
+    sig: 20
+    lam: 1e-10
+  charges_function: ${dataset.load_charges_function}
+  dataset_charges_path: ${dataset.path}
+

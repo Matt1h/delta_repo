@@ -1,0 +1,15 @@
+name: correlation_plot
+
+plot_function:
+  _target_: GPR_MLIP.evaluation.extended_reliablility_diagram
+  _partial_: true
+
+plot_function_kwargs:
+  num_bins: 20
+  bin_size: null
+  min_samples: 50
+  num_top_values: null
+  max_uncertainty: null
+  absolute: false
+  max_value: null
+  max_value_theory: null

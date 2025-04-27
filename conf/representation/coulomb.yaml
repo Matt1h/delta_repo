@@ -1,0 +1,5 @@
+name: coulomb
+
+function:
+  _target_: molecule_data.representations.coulomb
+  _partial_: true

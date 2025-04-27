@@ -1,0 +1,72 @@
+stages:
+  calc_new_data:
+    cmd: python src/delta_learning/1_calc_new_data.py
+    deps:
+    - src/delta_learning/1_calc_new_data.py
+    params:
+    - dataset
+    outs:
+    - results/data/new_data
+
+  evaluate_data:
+    cmd: python src/delta_learning/2_evaluate_data.py
+    deps:
+    - src/delta_learning/2_evaluate_data.py
+    - results/data/new_data
+    params:
+    - dataset
+    outs:
+    - dvclive/evaluate_data
+
+  prepare_data:
+    cmd: python src/delta_learning/3_prepare_data.py
+    deps:
+    - src/delta_learning/3_prepare_data.py
+    - results/data/new_data
+    params:
+    - s3_prepare_data
+    - dataset
+    - representation
+    outs:
+    - results/data/prepared_data
+
+  train:
+    cmd: python src/delta_learning/4_train.py
+    deps:
+    - src/delta_learning/4_train.py
+    - src/delta_learning/model
+    - results/data/prepared_data
+    params:
+    - model
+    outs:
+    - results/model
+
+  predict:
+    cmd: python src/delta_learning/5_predict.py
+    deps:
+    - src/delta_learning/5_predict.py
+    - src/delta_learning/model
+    - results/model
+    - results/data/prepared_data
+    params:
+    - dataset
+    - model
+    outs:
+    - results/prediction
+
+  evaluate:
+    cmd: python src/delta_learning/6_evaluate.py
+    deps:
+    - src/delta_learning/6_evaluate.py
+    - results/prediction
+    params:
+    - dataset
+    outs:
+    - dvclive/evaluate
+
+metrics:
+- dvclive/evaluate_data/metrics.json
+- dvclive/evaluate/metrics.json
+plots:
+- dvclive/evaluate_data/plots/images
+- dvclive/evaluate/plots/images

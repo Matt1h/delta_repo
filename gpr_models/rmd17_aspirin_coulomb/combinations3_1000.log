@@ -1,0 +1,6 @@
+[2024-06-11 15:46:31,801][__main__][INFO] - Running on host: Ubuntu-2204-jammy-amd64-base
+[2024-06-11 15:46:31,801][__main__][INFO] - Init trajectory.
+[2024-06-11 15:46:32,459][__main__][INFO] - Run experiment
+[2024-06-11 15:46:33,193][torch.distributed.nn.jit.instantiator][INFO] - Created a temporary directory at /tmp/tmp86m_7bd1
+[2024-06-11 15:46:33,194][torch.distributed.nn.jit.instantiator][INFO] - Writing /tmp/tmp86m_7bd1/_remote_module_non_scriptable.py
+[2024-06-11 16:09:29,304][__main__][INFO] - Experiment run time: 1376.8449218273163

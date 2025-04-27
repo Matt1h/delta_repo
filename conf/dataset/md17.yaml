@@ -1,0 +1,27 @@
+defaults:
+  - subset: full
+
+name: md17
+molecule_name: benzene
+
+high_fidelity: md17_energy
+low_fidelity: XTB
+
+path: /md17/md17_${dataset.molecule_name}.npz  # path inside ${datasets_dir}
+
+load_coordinates_function:
+  _target_: delta_learning.utils.npz.load_npz
+  key: 'R'
+  _partial_: true
+
+load_energies_function:
+  _target_: delta_learning.utils.load_scalar_properties_npz
+  unit: kcal/mol
+  fidelity_keys:
+    md17_energy: 'E'
+  _partial_: true
+
+load_charges_function:
+  _target_: delta_learning.utils.load_npz
+  key: 'z'
+  _partial_: true

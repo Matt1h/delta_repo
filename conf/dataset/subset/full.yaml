@@ -1,0 +1,2 @@
+subset_function:
+  _target_: delta_learning.utils.full

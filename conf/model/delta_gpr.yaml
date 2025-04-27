@@ -1,0 +1,24 @@
+name: delta_gpr
+
+defaults:
+  - kernel: rbf
+
+use_forces: false
+
+init_function:
+  _target_: delta_learning.model.gpr.DeltaGPR
+  fidelity: ${dataset.high_fidelity}
+  low_fidelity: ${dataset.low_fidelity}
+  model_kwargs:
+    likelihood:
+      _target_: gpytorch.likelihoods.GaussianLikelihood
+      noise_constraint:
+        _target_: gpytorch.constraints.GreaterThan
+        lower_bound: 1.0e-12
+    lr: 0.1
+    n_steps: 200
+  kernel: ${model.kernel.kernel}
+  old_state_dict_path: gpr_models/${dataset.name}_${dataset.molecule_name}_coulomb/best_model.pt
+  uncertainty_kwargs:
+    batch_size: 1000
+    use_likelihood: false

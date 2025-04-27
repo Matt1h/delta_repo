@@ -1,0 +1,9 @@
+[core]
+    autostage = true
+    remote = hifis
+[hydra]
+    enabled = True
+[exp]
+    auto_push = true
+['remote "hifis"']
+    url = webdavs://hifis-storage.desy.de:2443/Helmholtz/SimDataCC/dvc_play/dvc_play_matthias/delta_repo

@@ -1,0 +1,8 @@
+defaults:
+  - _self_
+  - s3_prepare_data: shuffle
+  - s5_predict: calc_correlation
+  - s6_evaluate: extended_reliablility_diagram
+  - dataset: rmd17
+  - model: single_fidelity_gpr
+  - representation: coulomb

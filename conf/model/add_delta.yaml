@@ -1,0 +1,8 @@
+name: add_delta
+
+use_forces: false
+
+init_function:
+  _target_: delta_learning.model.add_delta.AddDelta
+  fidelity: ${dataset.high_fidelity}
+  low_fidelity: ${dataset.low_fidelity}

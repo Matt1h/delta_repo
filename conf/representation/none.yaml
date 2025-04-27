@@ -1,0 +1,4 @@
+name: coulomb
+
+function:
+  _target_: delta_learning.utils.no_representation

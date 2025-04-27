@@ -1,0 +1,34 @@
+defaults:
+  - subset: full
+
+name: ws22
+molecule_name: sma
+
+high_fidelity: ws22
+low_fidelity: XTB
+
+path: /ws22/${dataset.molecule_name}.npz  # path inside ${datasets_dir}
+
+load_coordinates_function:
+  _target_: delta_learning.utils.load_npz
+  key: 'R'
+  _partial_: true
+
+load_charges_function:
+  _target_: delta_learning.utils.load_npz
+  key: 'Z'
+  _partial_: true
+
+load_energies_function:
+  _target_: delta_learning.utils.load_scalar_properties_npz
+  unit: kcal/mol
+  fidelity_keys:
+    ws22: 'E'
+  _partial_: true
+
+load_forces_function:
+  _target_: delta_learning.utils.load_scalar_properties_npz
+  unit: kcal/mol
+  fidelity_keys:
+    ws22: 'F'
+  _partial_: true

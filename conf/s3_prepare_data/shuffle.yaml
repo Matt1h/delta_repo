@@ -1,0 +1,6 @@
+seed: 42
+
+n_train: 1000
+n_test: 2000
+
+remove_offset: true

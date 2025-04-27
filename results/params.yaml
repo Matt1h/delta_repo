@@ -1,0 +1,82 @@
+project_root_dir: /home/mholzenkam/dev/
+project_dir: /home/mholzenkam/dev/delta_repo
+datasets_dir: /home/mholzenkam/dev//datasets
+dataset:
+  name: md17
+  molecule_name: benzene2017
+  high_fidelity: md17_energy
+  low_fidelity: XTB
+  load_coordinates_function:
+    _target_: molecular.load_other_formats.npz.load_npz
+    npz_path: /home/mholzenkam/dev//datasets/md17/md17_benzene2017.npz
+    key: R
+  load_energies_function:
+    _target_: molecular.load_other_formats.npz.load_scalar_properties_npz
+    npz_path: /home/mholzenkam/dev//datasets/md17/md17_benzene2017.npz
+    unit: kcal/mol
+    fidelity_keys:
+      md17_energy: E
+  load_charges_function:
+    _target_: molecular.load_other_formats.npz.load_npz
+    npz_path: /home/mholzenkam/dev//datasets/md17/md17_benzene2017.npz
+    key: z
+  subset_size: null
+  seed: 42
+prepare_data:
+  seed: 42
+  n_train: 1000
+  n_test: 2000
+calc_correlation:
+  name: calc_correlation
+train_model:
+  name: load
+  path: /home/mholzenkam/dev/experiments/benzene/cross_validation/rmd17_full_rmd17_energy/GPR_coulomb_rbf/combinations3_1000/best_model.pt
+  train_function:
+    _target_: delta_repo_utils.train_model.load_and_save_state_dict
+    state_dict_path: /home/mholzenkam/dev/experiments/benzene/cross_validation/rmd17_full_rmd17_energy/GPR_coulomb_rbf/combinations3_1000/best_model.pt
+model:
+  name: GPR
+  delta: true
+  init_function:
+    _target_: delta_repo_utils.model.init_gpr_model
+    high_fidelity: md17_energy
+    low_fidelity: XTB
+    _partial_: true
+  model:
+    _target_: delta_repo_utils.model.SingleFidelityGPR
+    likelihood:
+      _target_: gpytorch.likelihoods.GaussianLikelihood
+      noise_constraint:
+        _target_: gpytorch.constraints.GreaterThan
+        lower_bound: 1.0e-12
+    fit_mode: fixed_hypers
+    lr: 0.1
+    n_steps: 200
+    _partial_: true
+  kernel:
+    _target_: gpytorch.kernels.RBFKernel
+    _partial_: true
+representation:
+  name: coulomb
+  function:
+    _target_: molecule_data.representations.coulomb
+    _partial_: true
+uncertainty:
+  name: delta
+  uncertainty_function:
+    _target_: delta_repo_utils.uncertainty.delta
+    _partial_: true
+plot_correlation:
+  name: correlation_plot
+  plot_function:
+    _target_: delta_repo_utils.plot_correlation.correlation_plot
+    _partial_: true
+  plot_function_kwarg:
+    num_bins: null
+    bin_size: 1
+    min_samples: 50
+    num_top_values: null
+    max_uncertainty: null
+    absolute: false
+    max_value: null
+    max_value_theory: null
