@@ -41,7 +41,7 @@ stages:
     outs:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
   evaluate_data:
@@ -49,7 +49,7 @@ stages:
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
     - path: src/delta_learning/2_evaluate_data.py
@@ -90,7 +90,7 @@ stages:
     outs:
     - path: dvclive/evaluate_data
       hash: md5
-      md5: 657ffbb5c2207732828cf82ff58ed055.dir
+      md5: 7d8582b29b203429d4e41fb5951d456e.dir
       size: 92999
       nfiles: 3
   prepare_data:
@@ -98,7 +98,7 @@ stages:
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
     - path: src/delta_learning/3_prepare_data.py
@@ -149,7 +149,7 @@ stages:
     outs:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
+      md5: ec10e44420128d5f9220fde3f3a98d6a.dir
       size: 122497712
       nfiles: 9
   train:
@@ -157,7 +157,7 @@ stages:
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
+      md5: ec10e44420128d5f9220fde3f3a98d6a.dir
       size: 122497712
       nfiles: 9
     - path: src/delta_learning/4_train.py
@@ -166,9 +166,9 @@ stages:
       size: 1112
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         model:
@@ -207,7 +207,7 @@ stages:
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
+      md5: ec10e44420128d5f9220fde3f3a98d6a.dir
       size: 122497712
       nfiles: 9
     - path: results/model
@@ -221,9 +221,9 @@ stages:
       size: 4022
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         dataset:
@@ -283,7 +283,7 @@ stages:
     outs:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
+      md5: e904e9b444c8a53b3bfaec2b03caf121.dir
       size: 2383270
       nfiles: 6
   evaluate:
@@ -291,7 +291,7 @@ stages:
     deps:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
+      md5: e904e9b444c8a53b3bfaec2b03caf121.dir
       size: 2383270
       nfiles: 6
     - path: src/delta_learning/6_evaluate.py
@@ -332,6 +332,6 @@ stages:
     outs:
     - path: dvclive/evaluate
       hash: md5
-      md5: 28b428dfd8b539e9f6d2b9d8778491ba.dir
-      size: 44064
+      md5: 115b17e0c5bf320c8bec210cee44a531.dir
+      size: 44063
       nfiles: 2
