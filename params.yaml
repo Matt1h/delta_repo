@@ -24,10 +24,10 @@ dataset:
     subset_function:
       _target_: delta_learning.utils.full
   name: rmd17
-  molecule_name: benzene
+  molecule_name: aspirin
   high_fidelity: rmd17
   low_fidelity: XTB
-  path: /rmd17/npz_data/rmd17_benzene.npz
+  path: /rmd17/npz_data/rmd17_aspirin.npz
   load_coordinates_function:
     _target_: delta_learning.utils.load_npz
     key: coords
@@ -69,7 +69,7 @@ model:
     kernel:
       _target_: gpytorch.kernels.RBFKernel
       _partial_: true
-    old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
+    old_state_dict_path: gpr_models/rmd17_aspirin_coulomb/best_model.pt
     uncertainty_kwargs:
       batch_size: 1000
       use_likelihood: false

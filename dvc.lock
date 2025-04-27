@@ -14,10 +14,10 @@ stages:
             subset_function:
               _target_: delta_learning.utils.full
           name: rmd17
-          molecule_name: benzene
+          molecule_name: aspirin
           high_fidelity: rmd17
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /rmd17/npz_data/rmd17_aspirin.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
             key: coords
@@ -41,16 +41,16 @@ stages:
     outs:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 13a9347bd3a0c1da85060036f134d379.dir
+      size: 104001004
       nfiles: 2
   evaluate_data:
     cmd: python src/delta_learning/2_evaluate_data.py
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 13a9347bd3a0c1da85060036f134d379.dir
+      size: 104001004
       nfiles: 2
     - path: src/delta_learning/2_evaluate_data.py
       hash: md5
@@ -63,10 +63,10 @@ stages:
             subset_function:
               _target_: delta_learning.utils.full
           name: rmd17
-          molecule_name: benzene
+          molecule_name: aspirin
           high_fidelity: rmd17
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /rmd17/npz_data/rmd17_aspirin.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
             key: coords
@@ -90,16 +90,16 @@ stages:
     outs:
     - path: dvclive/evaluate_data
       hash: md5
-      md5: 657ffbb5c2207732828cf82ff58ed055.dir
-      size: 92999
+      md5: 5a158a927d34a24769ae1ae7d34d2c96.dir
+      size: 90431
       nfiles: 3
   prepare_data:
     cmd: python src/delta_learning/3_prepare_data.py
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 13a9347bd3a0c1da85060036f134d379.dir
+      size: 104001004
       nfiles: 2
     - path: src/delta_learning/3_prepare_data.py
       hash: md5
@@ -112,10 +112,10 @@ stages:
             subset_function:
               _target_: delta_learning.utils.full
           name: rmd17
-          molecule_name: benzene
+          molecule_name: aspirin
           high_fidelity: rmd17
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /rmd17/npz_data/rmd17_aspirin.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
             key: coords
@@ -149,16 +149,16 @@ stages:
     outs:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 1caee1cdabb038c3a8c85857555824ee.dir
+      size: 288097712
       nfiles: 9
   train:
     cmd: python src/delta_learning/4_train.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 1caee1cdabb038c3a8c85857555824ee.dir
+      size: 288097712
       nfiles: 9
     - path: src/delta_learning/4_train.py
       hash: md5
@@ -166,9 +166,9 @@ stages:
       size: 1112
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         model:
@@ -192,28 +192,28 @@ stages:
             kernel:
               _target_: gpytorch.kernels.RBFKernel
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
+            old_state_dict_path: gpr_models/rmd17_aspirin_coulomb/best_model.pt
             uncertainty_kwargs:
               batch_size: 1000
               use_likelihood: false
     outs:
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: 9fba2199c3b35faa892909c569271e5f.dir
+      size: 1875857
       nfiles: 3
   predict:
     cmd: python src/delta_learning/5_predict.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 1caee1cdabb038c3a8c85857555824ee.dir
+      size: 288097712
       nfiles: 9
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: 9fba2199c3b35faa892909c569271e5f.dir
+      size: 1875857
       nfiles: 3
     - path: src/delta_learning/5_predict.py
       hash: md5
@@ -221,9 +221,9 @@ stages:
       size: 4022
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
-      nfiles: 7
+      md5: fc06e6ae4655e41a258b47f0ede8e47e.dir
+      size: 21008
+      nfiles: 6
     params:
       params.yaml:
         dataset:
@@ -231,10 +231,10 @@ stages:
             subset_function:
               _target_: delta_learning.utils.full
           name: rmd17
-          molecule_name: benzene
+          molecule_name: aspirin
           high_fidelity: rmd17
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /rmd17/npz_data/rmd17_aspirin.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
             key: coords
@@ -276,14 +276,14 @@ stages:
             kernel:
               _target_: gpytorch.kernels.RBFKernel
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
+            old_state_dict_path: gpr_models/rmd17_aspirin_coulomb/best_model.pt
             uncertainty_kwargs:
               batch_size: 1000
               use_likelihood: false
     outs:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
+      md5: e60ba66f06434a97b533c8a4d7487a1a.dir
       size: 2383270
       nfiles: 6
   evaluate:
@@ -291,7 +291,7 @@ stages:
     deps:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
+      md5: e60ba66f06434a97b533c8a4d7487a1a.dir
       size: 2383270
       nfiles: 6
     - path: src/delta_learning/6_evaluate.py
@@ -305,10 +305,10 @@ stages:
             subset_function:
               _target_: delta_learning.utils.full
           name: rmd17
-          molecule_name: benzene
+          molecule_name: aspirin
           high_fidelity: rmd17
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /rmd17/npz_data/rmd17_aspirin.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
             key: coords
@@ -332,6 +332,6 @@ stages:
     outs:
     - path: dvclive/evaluate
       hash: md5
-      md5: 28b428dfd8b539e9f6d2b9d8778491ba.dir
-      size: 44064
+      md5: b3fa17f932c0d4a5862732705fdd6cf8.dir
+      size: 36481
       nfiles: 2
