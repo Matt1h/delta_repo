@@ -41,7 +41,7 @@ stages:
     outs:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
   evaluate_data:
@@ -49,7 +49,7 @@ stages:
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
     - path: src/delta_learning/2_evaluate_data.py
@@ -90,7 +90,7 @@ stages:
     outs:
     - path: dvclive/evaluate_data
       hash: md5
-      md5: 657ffbb5c2207732828cf82ff58ed055.dir
+      md5: 7d8582b29b203429d4e41fb5951d456e.dir
       size: 92999
       nfiles: 3
   prepare_data:
@@ -98,7 +98,7 @@ stages:
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
+      md5: 45d7ca8a54e128bf9770843e3efbcc77.dir
       size: 60801004
       nfiles: 2
     - path: src/delta_learning/3_prepare_data.py
@@ -139,8 +139,7 @@ stages:
         representation:
           name: coulomb
           function:
-            _target_: molecule_data.representations.coulomb
-            _partial_: true
+            _target_: delta_learning.utils.no_representation
         s3_prepare_data:
           seed: 42
           n_train: 1000
@@ -149,16 +148,16 @@ stages:
     outs:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: fd4be60472a15cad735bb44f4ee5dc4d.dir
+      size: 88897712
       nfiles: 9
   train:
     cmd: python src/delta_learning/4_train.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: fd4be60472a15cad735bb44f4ee5dc4d.dir
+      size: 88897712
       nfiles: 9
     - path: src/delta_learning/4_train.py
       hash: md5
@@ -166,54 +165,48 @@ stages:
       size: 1112
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
+      md5: 725859fdfba369d3c5413e5c44cfdde1.dir
+      size: 30930
       nfiles: 7
     params:
       params.yaml:
         model:
-          kernel:
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
-              _partial_: true
-          name: single_fidelity_gpr
-          use_forces: false
+          name: single_fidelity_sgdml
+          use_forces: true
           init_function:
-            _target_: delta_learning.model.gpr.SingleFidelityGPR
+            _target_: delta_learning.model.sgdml.SingleFidelitySGDML
             fidelity: rmd17
-            model_kwargs:
-              likelihood:
-                _target_: gpytorch.likelihoods.GaussianLikelihood
-                noise_constraint:
-                  _target_: gpytorch.constraints.GreaterThan
-                  lower_bound: 1e-12
-              lr: 0.1
-              n_steps: 200
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
+            data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+            train_kwargs:
+              max_memory:
+              max_processes: 1
+              use_torch: false
+            task_kwargs:
+              sig: 20
+              lam: 1e-10
+            charges_function:
+              _target_: delta_learning.utils.load_npz
+              key: nuclear_charges
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
-            uncertainty_kwargs:
-              batch_size: 1000
-              use_likelihood: false
+            dataset_charges_path: /rmd17/npz_data/rmd17_benzene.npz
     outs:
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: 32969daaa091b8a62a5530419ee6ac31.dir
+      size: 3146997
       nfiles: 3
   predict:
     cmd: python src/delta_learning/5_predict.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: fd4be60472a15cad735bb44f4ee5dc4d.dir
+      size: 88897712
       nfiles: 9
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: 32969daaa091b8a62a5530419ee6ac31.dir
+      size: 3146997
       nfiles: 3
     - path: src/delta_learning/5_predict.py
       hash: md5
@@ -221,8 +214,8 @@ stages:
       size: 4022
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
+      md5: 725859fdfba369d3c5413e5c44cfdde1.dir
+      size: 30930
       nfiles: 7
     params:
       params.yaml:
@@ -256,44 +249,38 @@ stages:
               rmd17: forces
             _partial_: true
         model:
-          kernel:
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
-              _partial_: true
-          name: single_fidelity_gpr
-          use_forces: false
+          name: single_fidelity_sgdml
+          use_forces: true
           init_function:
-            _target_: delta_learning.model.gpr.SingleFidelityGPR
+            _target_: delta_learning.model.sgdml.SingleFidelitySGDML
             fidelity: rmd17
-            model_kwargs:
-              likelihood:
-                _target_: gpytorch.likelihoods.GaussianLikelihood
-                noise_constraint:
-                  _target_: gpytorch.constraints.GreaterThan
-                  lower_bound: 1e-12
-              lr: 0.1
-              n_steps: 200
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
+            data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+            train_kwargs:
+              max_memory:
+              max_processes: 1
+              use_torch: false
+            task_kwargs:
+              sig: 20
+              lam: 1e-10
+            charges_function:
+              _target_: delta_learning.utils.load_npz
+              key: nuclear_charges
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
-            uncertainty_kwargs:
-              batch_size: 1000
-              use_likelihood: false
+            dataset_charges_path: /rmd17/npz_data/rmd17_benzene.npz
     outs:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
-      nfiles: 6
+      md5: bace4940cb340c3a66fca4e78761b05f.dir
+      size: 87926540
+      nfiles: 12
   evaluate:
     cmd: python src/delta_learning/6_evaluate.py
     deps:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
-      nfiles: 6
+      md5: bace4940cb340c3a66fca4e78761b05f.dir
+      size: 87926540
+      nfiles: 12
     - path: src/delta_learning/6_evaluate.py
       hash: md5
       md5: 6bf432659564f3fb2d98369643335bd5
@@ -332,6 +319,6 @@ stages:
     outs:
     - path: dvclive/evaluate
       hash: md5
-      md5: 28b428dfd8b539e9f6d2b9d8778491ba.dir
-      size: 44064
-      nfiles: 2
+      md5: a29aa50883867bc382717ca4a8d7c3e4.dir
+      size: 117318
+      nfiles: 5

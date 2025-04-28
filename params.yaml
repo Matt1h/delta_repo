@@ -49,32 +49,25 @@ dataset:
       rmd17: forces
     _partial_: true
 model:
-  kernel:
-    kernel:
-      _target_: gpytorch.kernels.RBFKernel
-      _partial_: true
-  name: single_fidelity_gpr
-  use_forces: false
+  name: single_fidelity_sgdml
+  use_forces: true
   init_function:
-    _target_: delta_learning.model.gpr.SingleFidelityGPR
+    _target_: delta_learning.model.sgdml.SingleFidelitySGDML
     fidelity: rmd17
-    model_kwargs:
-      likelihood:
-        _target_: gpytorch.likelihoods.GaussianLikelihood
-        noise_constraint:
-          _target_: gpytorch.constraints.GreaterThan
-          lower_bound: 1.0e-12
-      lr: 0.1
-      n_steps: 200
-    kernel:
-      _target_: gpytorch.kernels.RBFKernel
+    data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+    train_kwargs:
+      max_memory: null
+      max_processes: 1
+      use_torch: false
+    task_kwargs:
+      sig: 20
+      lam: 1.0e-10
+    charges_function:
+      _target_: delta_learning.utils.load_npz
+      key: nuclear_charges
       _partial_: true
-    old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
-    uncertainty_kwargs:
-      batch_size: 1000
-      use_likelihood: false
+    dataset_charges_path: /rmd17/npz_data/rmd17_benzene.npz
 representation:
   name: coulomb
   function:
-    _target_: molecule_data.representations.coulomb
-    _partial_: true
+    _target_: delta_learning.utils.no_representation
