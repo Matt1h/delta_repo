@@ -13,44 +13,44 @@ stages:
           subset:
             subset_function:
               _target_: delta_learning.utils.full
-          name: rmd17
-          molecule_name: benzene
-          high_fidelity: rmd17
+          name: ws22
+          molecule_name: o-hbdi
+          high_fidelity: ws22
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /ws22/o-hbdi.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
-            key: coords
+            key: R
             _partial_: true
           load_charges_function:
             _target_: delta_learning.utils.load_npz
-            key: nuclear_charges
+            key: Z
             _partial_: true
           load_energies_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: energies
+              ws22: E
             _partial_: true
           load_forces_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: forces
+              ws22: F
             _partial_: true
     outs:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 7963202a974be718692cca5e1a3df230.dir
+      size: 130561000
       nfiles: 2
   evaluate_data:
     cmd: python src/delta_learning/2_evaluate_data.py
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 7963202a974be718692cca5e1a3df230.dir
+      size: 130561000
       nfiles: 2
     - path: src/delta_learning/2_evaluate_data.py
       hash: md5
@@ -62,44 +62,44 @@ stages:
           subset:
             subset_function:
               _target_: delta_learning.utils.full
-          name: rmd17
-          molecule_name: benzene
-          high_fidelity: rmd17
+          name: ws22
+          molecule_name: o-hbdi
+          high_fidelity: ws22
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /ws22/o-hbdi.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
-            key: coords
+            key: R
             _partial_: true
           load_charges_function:
             _target_: delta_learning.utils.load_npz
-            key: nuclear_charges
+            key: Z
             _partial_: true
           load_energies_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: energies
+              ws22: E
             _partial_: true
           load_forces_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: forces
+              ws22: F
             _partial_: true
     outs:
     - path: dvclive/evaluate_data
       hash: md5
-      md5: 657ffbb5c2207732828cf82ff58ed055.dir
-      size: 92999
+      md5: 6d491d7c8dd88f811ceaf0a82906b554.dir
+      size: 92770
       nfiles: 3
   prepare_data:
     cmd: python src/delta_learning/3_prepare_data.py
     deps:
     - path: results/data/new_data
       hash: md5
-      md5: 7ed35f1747708237abfe6fff590b78a1.dir
-      size: 60801004
+      md5: 7963202a974be718692cca5e1a3df230.dir
+      size: 130561000
       nfiles: 2
     - path: src/delta_learning/3_prepare_data.py
       hash: md5
@@ -111,36 +111,35 @@ stages:
           subset:
             subset_function:
               _target_: delta_learning.utils.full
-          name: rmd17
-          molecule_name: benzene
-          high_fidelity: rmd17
+          name: ws22
+          molecule_name: o-hbdi
+          high_fidelity: ws22
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /ws22/o-hbdi.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
-            key: coords
+            key: R
             _partial_: true
           load_charges_function:
             _target_: delta_learning.utils.load_npz
-            key: nuclear_charges
+            key: Z
             _partial_: true
           load_energies_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: energies
+              ws22: E
             _partial_: true
           load_forces_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: forces
+              ws22: F
             _partial_: true
         representation:
           name: coulomb
           function:
-            _target_: molecule_data.representations.coulomb
-            _partial_: true
+            _target_: delta_learning.utils.no_representation
         s3_prepare_data:
           seed: 42
           n_train: 1000
@@ -149,16 +148,16 @@ stages:
     outs:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 218216c9d4bea59b26eb42b68b3673c0.dir
+      size: 193087792
       nfiles: 9
   train:
     cmd: python src/delta_learning/4_train.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 218216c9d4bea59b26eb42b68b3673c0.dir
+      size: 193087792
       nfiles: 9
     - path: src/delta_learning/4_train.py
       hash: md5
@@ -166,54 +165,48 @@ stages:
       size: 1112
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
+      md5: 725859fdfba369d3c5413e5c44cfdde1.dir
+      size: 30930
       nfiles: 7
     params:
       params.yaml:
         model:
-          kernel:
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
-              _partial_: true
-          name: single_fidelity_gpr
-          use_forces: false
+          name: single_fidelity_sgdml
+          use_forces: true
           init_function:
-            _target_: delta_learning.model.gpr.SingleFidelityGPR
-            fidelity: rmd17
-            model_kwargs:
-              likelihood:
-                _target_: gpytorch.likelihoods.GaussianLikelihood
-                noise_constraint:
-                  _target_: gpytorch.constraints.GreaterThan
-                  lower_bound: 1e-12
-              lr: 0.1
-              n_steps: 200
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
+            _target_: delta_learning.model.sgdml.SingleFidelitySGDML
+            fidelity: ws22
+            data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+            train_kwargs:
+              max_memory:
+              max_processes: 1
+              use_torch: false
+            task_kwargs:
+              sig: 20
+              lam: 1e-10
+            charges_function:
+              _target_: delta_learning.utils.load_npz
+              key: Z
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
-            uncertainty_kwargs:
-              batch_size: 1000
-              use_likelihood: false
+            dataset_charges_path: /ws22/o-hbdi.npz
     outs:
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: d5d5098eeff5939afb797c8eaeb79b32.dir
+      size: 7587306
       nfiles: 3
   predict:
     cmd: python src/delta_learning/5_predict.py
     deps:
     - path: results/data/prepared_data
       hash: md5
-      md5: c2436075652c511080de0accb385c29b.dir
-      size: 122497712
+      md5: 218216c9d4bea59b26eb42b68b3673c0.dir
+      size: 193087792
       nfiles: 9
     - path: results/model
       hash: md5
-      md5: 1854bfe06ae01be964d585eb435d9a98.dir
-      size: 650577
+      md5: d5d5098eeff5939afb797c8eaeb79b32.dir
+      size: 7587306
       nfiles: 3
     - path: src/delta_learning/5_predict.py
       hash: md5
@@ -221,8 +214,8 @@ stages:
       size: 4022
     - path: src/delta_learning/model
       hash: md5
-      md5: e49a19b87bbffa627fc9c90e406273d9.dir
-      size: 30924
+      md5: 725859fdfba369d3c5413e5c44cfdde1.dir
+      size: 30930
       nfiles: 7
     params:
       params.yaml:
@@ -230,70 +223,64 @@ stages:
           subset:
             subset_function:
               _target_: delta_learning.utils.full
-          name: rmd17
-          molecule_name: benzene
-          high_fidelity: rmd17
+          name: ws22
+          molecule_name: o-hbdi
+          high_fidelity: ws22
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /ws22/o-hbdi.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
-            key: coords
+            key: R
             _partial_: true
           load_charges_function:
             _target_: delta_learning.utils.load_npz
-            key: nuclear_charges
+            key: Z
             _partial_: true
           load_energies_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: energies
+              ws22: E
             _partial_: true
           load_forces_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: forces
+              ws22: F
             _partial_: true
         model:
-          kernel:
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
-              _partial_: true
-          name: single_fidelity_gpr
-          use_forces: false
+          name: single_fidelity_sgdml
+          use_forces: true
           init_function:
-            _target_: delta_learning.model.gpr.SingleFidelityGPR
-            fidelity: rmd17
-            model_kwargs:
-              likelihood:
-                _target_: gpytorch.likelihoods.GaussianLikelihood
-                noise_constraint:
-                  _target_: gpytorch.constraints.GreaterThan
-                  lower_bound: 1e-12
-              lr: 0.1
-              n_steps: 200
-            kernel:
-              _target_: gpytorch.kernels.RBFKernel
+            _target_: delta_learning.model.sgdml.SingleFidelitySGDML
+            fidelity: ws22
+            data_conversion_script_path: sGDML/scripts/sgdml_dataset_via_ase.py
+            train_kwargs:
+              max_memory:
+              max_processes: 1
+              use_torch: false
+            task_kwargs:
+              sig: 20
+              lam: 1e-10
+            charges_function:
+              _target_: delta_learning.utils.load_npz
+              key: Z
               _partial_: true
-            old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
-            uncertainty_kwargs:
-              batch_size: 1000
-              use_likelihood: false
+            dataset_charges_path: /ws22/o-hbdi.npz
     outs:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
-      nfiles: 6
+      md5: 590cba4d94af8fd6bf5f647159aed6fd.dir
+      size: 191366540
+      nfiles: 12
   evaluate:
     cmd: python src/delta_learning/6_evaluate.py
     deps:
     - path: results/prediction
       hash: md5
-      md5: d46f3eb4a7872d193b653442f5f9749f.dir
-      size: 2383270
-      nfiles: 6
+      md5: 590cba4d94af8fd6bf5f647159aed6fd.dir
+      size: 191366540
+      nfiles: 12
     - path: src/delta_learning/6_evaluate.py
       hash: md5
       md5: 6bf432659564f3fb2d98369643335bd5
@@ -304,34 +291,34 @@ stages:
           subset:
             subset_function:
               _target_: delta_learning.utils.full
-          name: rmd17
-          molecule_name: benzene
-          high_fidelity: rmd17
+          name: ws22
+          molecule_name: o-hbdi
+          high_fidelity: ws22
           low_fidelity: XTB
-          path: /rmd17/npz_data/rmd17_benzene.npz
+          path: /ws22/o-hbdi.npz
           load_coordinates_function:
             _target_: delta_learning.utils.load_npz
-            key: coords
+            key: R
             _partial_: true
           load_charges_function:
             _target_: delta_learning.utils.load_npz
-            key: nuclear_charges
+            key: Z
             _partial_: true
           load_energies_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: energies
+              ws22: E
             _partial_: true
           load_forces_function:
             _target_: delta_learning.utils.load_scalar_properties_npz
             unit: kcal/mol
             fidelity_keys:
-              rmd17: forces
+              ws22: F
             _partial_: true
     outs:
     - path: dvclive/evaluate
       hash: md5
-      md5: 28b428dfd8b539e9f6d2b9d8778491ba.dir
-      size: 44064
-      nfiles: 2
+      md5: f2773cf2d0bbe34744a8e845102c667e.dir
+      size: 145033
+      nfiles: 5
