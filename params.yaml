@@ -23,30 +23,30 @@ dataset:
   subset:
     subset_function:
       _target_: delta_learning.utils.full
-  name: rmd17
-  molecule_name: benzene
-  high_fidelity: rmd17
+  name: ws22
+  molecule_name: o-hbdi
+  high_fidelity: ws22
   low_fidelity: XTB
-  path: /rmd17/npz_data/rmd17_benzene.npz
+  path: /ws22/o-hbdi.npz
   load_coordinates_function:
     _target_: delta_learning.utils.load_npz
-    key: coords
+    key: R
     _partial_: true
   load_charges_function:
     _target_: delta_learning.utils.load_npz
-    key: nuclear_charges
+    key: Z
     _partial_: true
   load_energies_function:
     _target_: delta_learning.utils.load_scalar_properties_npz
     unit: kcal/mol
     fidelity_keys:
-      rmd17: energies
+      ws22: E
     _partial_: true
   load_forces_function:
     _target_: delta_learning.utils.load_scalar_properties_npz
     unit: kcal/mol
     fidelity_keys:
-      rmd17: forces
+      ws22: F
     _partial_: true
 model:
   kernel:
@@ -57,7 +57,7 @@ model:
   use_forces: false
   init_function:
     _target_: delta_learning.model.gpr.SingleFidelityGPR
-    fidelity: rmd17
+    fidelity: ws22
     model_kwargs:
       likelihood:
         _target_: gpytorch.likelihoods.GaussianLikelihood
@@ -69,7 +69,7 @@ model:
     kernel:
       _target_: gpytorch.kernels.RBFKernel
       _partial_: true
-    old_state_dict_path: gpr_models/rmd17_benzene_coulomb/best_model.pt
+    old_state_dict_path: gpr_models/ws22_o-hbdi_coulomb/best_model.pt
     uncertainty_kwargs:
       batch_size: 1000
       use_likelihood: false
