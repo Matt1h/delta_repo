@@ -1,0 +1,12 @@
+numpy
+torch
+gpytorch
+matplotlib
+hydra-core
+dvc
+dvclive
+omegaconf
+ase
+xtb
+sgdml
+GPR_MLIP

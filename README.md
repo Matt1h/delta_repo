@@ -8,7 +8,7 @@ Clone the repository and run
 ```bash
 pip install -e .
 ```
-inside it.
+inside it. Note that the [GPR_MLIP](https://github.com/SM4DA/GPR_MLIP_uncertainty_evaluation) package has to be installed.
 
 # Prepare data for experiments
 Before running experiments, the data has to be stored appropriately. To run the experiments with the datasets used in the paper, create a directory named `datasets` in the same directory as this repository. Inside the `datasets` directory, include the following:
@@ -97,14 +97,3 @@ Here, the uncertainty is calculated as the difference between the prediction of 
 dvc exp run -S model=add_delta
 ```
 Here random values are returned as uncertainty.
-
-
-
-
-## Pull cache to get pipeline results
-If you are connected with the HIFIS storage via OIDC-agent you can pull the cache with
-```
-dvc remote modify --local hifis token `oidc-token <oidc config name>`
-dvc exp pull origin --run-cache -A
-```
-to get results from experiments that have been run already.

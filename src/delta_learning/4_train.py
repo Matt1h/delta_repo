@@ -1,7 +1,5 @@
 import os
 from os.path import join
-import gc
-import shutil
 import socket
 import logging
 import torch

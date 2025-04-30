@@ -7,7 +7,7 @@ molecule_name: sma
 high_fidelity: ws22
 low_fidelity: XTB
 
-path: /ws22/${dataset.molecule_name}.npz  # path inside ${datasets_dir}
+path: /ws22/ws22_${dataset.molecule_name}.npz
 
 load_coordinates_function:
   _target_: delta_learning.utils.load_npz
